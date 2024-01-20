@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import { url } from '../const';
 import { Header } from '../components/Header';
-import './newTask.css';
-import { useHistory } from 'react-router-dom';
+import './newTask.scss';
 
 export function NewTask() {
   const [selectListId, setSelectListId] = useState();
@@ -68,7 +68,7 @@ export function NewTask() {
             className="new-task-select-list"
           >
             {lists.map((list, key) => (
-              <option key={key} className="list-item" value={list.id}>
+              <option key={key.id} className="list-item" value={list.id}>
                 {list.title}
               </option>
             ))}

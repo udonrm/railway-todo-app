@@ -17,17 +17,17 @@
   list-style: none;
   display: flex;
   overflow-x: auto;
-}
 
-.list-tab-item {
-  flex-shrink: 0;
-  width: 100px;
-  padding: 0 25px;
-  text-overflow: normal;
-  margin-right: 5px;
-  border: solid 1px #242f9b;
-  justify-content: center;
-  align-items: center;
+  &-item {
+    flex-shrink: 0;
+    width: 100px;
+    padding: 0 25px;
+    text-overflow: normal;
+    margin-right: 5px;
+    border: solid 1px #242f9b;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .active {
@@ -37,11 +37,11 @@
 
 .tasks {
   margin-top: 25px;
-}
 
-.tasks-header {
-  display: flex;
-  justify-content: space-between;
+  &header {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .task-item {
@@ -52,25 +52,25 @@
   padding-left: 25px;
   font-size: large;
   border: solid 1px #ffffff;
-}
 
-.task-item-link {
-  display: block;
-  width: 100%;
-  height: 100%;
-  text-decoration: none;
-  color: #000000;
+  &-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: #000000;
+  }
 }
 
 .error-message {
   color: #ff3333;
 }
 
-.display-select-wrapper {
-  width: 100px;
-  margin: 0 0 25px auto;
-}
-
 .display-select {
   width: 100%;
+
+  &-wrapper {
+    width: 100px;
+    margin: 0 0 25px auto;
+  }
 }

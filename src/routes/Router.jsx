@@ -10,7 +10,7 @@ import { EditTask } from '../pages/EditTask';
 import { SignUp } from '../pages/SignUp';
 import { EditList } from '../pages/EditList';
 
-export const Router = () => {
+export function Router() {
   const auth = useSelector((state) => state.auth.isSignIn);
 
   return (
@@ -37,4 +37,4 @@ export const Router = () => {
       </Switch>
     </BrowserRouter>
   );
-};
+}
