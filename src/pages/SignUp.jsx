@@ -6,7 +6,7 @@ import { useHistory, Redirect } from 'react-router-dom';
 import { signIn } from '../authSlice';
 import { Header } from '../components/Header';
 import { url } from '../const';
-import './signUp.css';
+import './signUp.scss';
 
 export function SignUp() {
   const history = useHistory();
@@ -40,6 +40,9 @@ export function SignUp() {
       });
 
     if (auth) return <Redirect to="/" />;
+
+    // 明示的な戻り値の設定
+    return null;
   };
   return (
     <div>

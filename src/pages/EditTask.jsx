@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import { useHistory, useParams } from 'react-router-dom';
 import { url } from '../const';
 import { Header } from '../components/Header';
-import './editTask.css';
+import './editTask.scss';
 
 export function EditTask() {
   const history = useHistory();

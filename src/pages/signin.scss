@@ -1,29 +1,32 @@
 @charset "utf-8";
 
-.signup {
+.signin {
   width: 500px;
   margin: 0 auto;
+
+  &-form {
+    margin: 25px 0;
+  }
+
+  &-button {
+    background-color: #242f9b;
+    color: #ffffff;
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+  }
 }
-.signup-form {
-  margin: 25px 0;
+.email-label,
+.password-label {
   color: #555555;
 }
 
 .email-input,
-.name-input,
 .password-input {
   width: 100%;
   font-size: large;
   height: 30px;
   margin-bottom: 25px;
-}
-
-.signup-button {
-  background-color: #242f9b;
-  color: #ffffff;
-  width: 100px;
-  height: 40px;
-  border-radius: 5px;
 }
 
 .error-message {
