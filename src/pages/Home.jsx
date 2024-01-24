@@ -142,6 +142,7 @@ function Tasks(props) {
               >
                 {task.title}
                 <br />
+                {task.limit}
                 {task.done ? '完了' : '未完了'}
               </Link>
             </li>

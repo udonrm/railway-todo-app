@@ -11,17 +11,32 @@ export function NewTask() {
   const [lists, setLists] = useState([]);
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
+  const [limit, setLimit] = useState();
   const [errorMessage, setErrorMessage] = useState('');
   const [cookies] = useCookies();
   const history = useHistory();
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
+  const handleDateChange = (e) => {
+    const dateObj = new Date(e.target.value);
+    const isoDateTime = dateObj.toISOString();
+    // 先頭から末尾5桁以外の文字をZと連結して形式を整える
+    const formattedDateTime = `${isoDateTime.substring(0, isoDateTime.length - 5)}Z`;
+    setLimit(formattedDateTime);
+  };
   const handleSelectList = (id) => setSelectListId(id);
   const onCreateTask = () => {
+    // 日本時間
+    const localDateObj = new Date(limit);
+    // UTCに変換(+9時間)してからデータを送信する
+    const utcDateTime = new Date(
+      localDateObj.getTime() - localDateObj.getTimezoneOffset() * 60000,
+    ).toISOString();
     const data = {
       title,
       detail,
       done: false,
+      limit: utcDateTime,
     };
 
     axios
@@ -32,6 +47,7 @@ export function NewTask() {
       })
       .then(() => {
         history.push('/');
+        console.log(limit);
       })
       .catch((err) => {
         setErrorMessage(`タスクの作成に失敗しました。${err}`);
@@ -88,6 +104,12 @@ export function NewTask() {
             type="text"
             onChange={handleDetailChange}
             className="new-task-detail"
+          />
+          <br />
+          <input
+            type="datetime-local"
+            onChange={handleDateChange}
+            className="new-task-date"
           />
           <br />
           <button
