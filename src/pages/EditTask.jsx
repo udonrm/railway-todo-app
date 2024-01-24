@@ -12,17 +12,33 @@ export function EditTask() {
   const [cookies] = useCookies();
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
+  const [limit, setLimit] = useState('');
   const [isDone, setIsDone] = useState();
   const [errorMessage, setErrorMessage] = useState('');
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
+  const handleDateChange = (e) => {
+    // const dateObj = new Date(e.target.value);
+    // const isoDateTime = dateObj.toISOString();
+    // // 先頭から末尾5桁以外の文字をZと連結して形式を整える
+    // const formattedDateTime = `${isoDateTime.substring(0, isoDateTime.length - 5)}Z`;
+    // console.log(formattedDateTime);
+    setLimit(e.target.value);
+  };
   const handleIsDoneChange = (e) => setIsDone(e.target.value === 'done');
   const onUpdateTask = () => {
-    console.log(isDone);
+    // 日本時間
+    const localDateObj = new Date(limit);
+    // UTCに変換(+9時間)してからデータを送信する
+    const utcDateTime = new Date(
+      localDateObj.getTime() - localDateObj.getTimezoneOffset() * 60000,
+    ).toISOString();
+
     const data = {
       title,
       detail,
       done: isDone,
+      limit: utcDateTime,
     };
 
     axios
@@ -32,8 +48,8 @@ export function EditTask() {
         },
       })
       .then((res) => {
-        console.log(res.data);
         history.push('/');
+        console.log(res.data);
       })
       .catch((err) => {
         setErrorMessage(`更新に失敗しました。${err}`);
@@ -67,6 +83,14 @@ export function EditTask() {
         setTitle(task.title);
         setDetail(task.detail);
         setIsDone(task.done);
+
+        // UTCの日付をDateオブジェクトに変換し、ローカルタイムゾーン（JST）に変換
+        const dateObj = new Date(task.limit);
+        dateObj.setMinutes(
+          dateObj.getMinutes() + dateObj.getTimezoneOffset() + 9 * 60,
+        );
+        const localDateTime = dateObj.toISOString().substring(0, 16);
+        setLimit(localDateTime);
       })
       .catch((err) => {
         setErrorMessage(`タスク情報の取得に失敗しました。${err}`);
@@ -98,6 +122,12 @@ export function EditTask() {
             value={detail}
           />
           <br />
+          <input
+            type="datetime-local"
+            onChange={handleDateChange}
+            className="edit-task-date"
+            value={limit}
+          />
           <div>
             <input
               type="radio"
