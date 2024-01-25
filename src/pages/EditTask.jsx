@@ -27,18 +27,16 @@ export function EditTask() {
   };
   const handleIsDoneChange = (e) => setIsDone(e.target.value === 'done');
   const onUpdateTask = () => {
-    // 日本時間
-    const localDateObj = new Date(limit);
-    // UTCに変換(+9時間)してからデータを送信する
-    const utcDateTime = new Date(
-      localDateObj.getTime() - localDateObj.getTimezoneOffset() * 60000,
-    ).toISOString();
+    // 登録の際はUTC準拠
+    const dateObj = new Date(limit);
+    const isoDateTime = dateObj.toISOString();
+    const formattedDateTime = `${isoDateTime.substring(0, isoDateTime.length - 5)}Z`;
 
     const data = {
       title,
       detail,
       done: isDone,
-      limit: utcDateTime,
+      limit: formattedDateTime,
     };
 
     axios
@@ -84,11 +82,9 @@ export function EditTask() {
         setDetail(task.detail);
         setIsDone(task.done);
 
-        // UTCの日付をDateオブジェクトに変換し、ローカルタイムゾーン（JST）に変換
+        // DBの時間から+9時間して表示させる
         const dateObj = new Date(task.limit);
-        dateObj.setMinutes(
-          dateObj.getMinutes() + dateObj.getTimezoneOffset() + 9 * 60,
-        );
+        dateObj.setTime(dateObj.getTime() + 9 * 60 * 60 * 1000);
         const localDateTime = dateObj.toISOString().substring(0, 16);
         setLimit(localDateTime);
       })

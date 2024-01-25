@@ -26,17 +26,11 @@ export function NewTask() {
   };
   const handleSelectList = (id) => setSelectListId(id);
   const onCreateTask = () => {
-    // 日本時間
-    const localDateObj = new Date(limit);
-    // UTCに変換(+9時間)してからデータを送信する
-    const utcDateTime = new Date(
-      localDateObj.getTime() - localDateObj.getTimezoneOffset() * 60000,
-    ).toISOString();
     const data = {
       title,
       detail,
       done: false,
-      limit: utcDateTime,
+      limit,
     };
 
     axios
