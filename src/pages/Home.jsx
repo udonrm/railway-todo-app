@@ -14,6 +14,8 @@ export function Home() {
   const [errorMessage, setErrorMessage] = useState('');
   const [cookies] = useCookies();
   const handleIsDoneDisplayChange = (e) => setIsDoneDisplay(e.target.value);
+  const currentTime = new Date();
+
   useEffect(() => {
     axios
       .get(`${url}/lists`, {
@@ -50,10 +52,24 @@ export function Home() {
 
   // DBの時刻から+9時間
   tasks.forEach((task) => {
+    // 一覧ページに表示させるために+9時間
     const dateObj = new Date(task.limit);
     dateObj.setTime(dateObj.getTime() + 9 * 60 * 60 * 1000);
     const localDateTime = dateObj.toISOString().substring(0, 16);
     task.limit = localDateTime;
+
+    // 日本時間と比較するのでlocalDateTimeをもう一度Dateオブジェクトに直す
+    const taskLimit = new Date(localDateTime);
+    const diff = taskLimit.getTime() - currentTime.getTime();
+    const diffMin = diff / (60 * 1000);
+    console.log(diffMin);
+    const remainingTime = `${Math.floor(diffMin / 60)}時間${Math.floor(diffMin % 60)}分`;
+    if (diffMin > 0) {
+      task.remainingTime = remainingTime;
+    } else {
+      task.remainingTime = '期限切れ';
+    }
+    console.log(remainingTime);
   });
 
   const handleSelectList = (id) => {
@@ -173,6 +189,8 @@ function Tasks(props) {
               {task.title}
               <br />
               期限: {task.limit}
+              <br />
+              残り: {task.remainingTime}
               <br />
               {task.done ? '完了' : '未完了'}
             </Link>
