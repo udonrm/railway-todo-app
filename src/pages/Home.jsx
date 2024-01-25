@@ -48,6 +48,14 @@ export function Home() {
     }
   }, [lists]);
 
+  // DBの時刻から+9時間
+  tasks.forEach((task) => {
+    const dateObj = new Date(task.limit);
+    dateObj.setTime(dateObj.getTime() + 9 * 60 * 60 * 1000);
+    const localDateTime = dateObj.toISOString().substring(0, 16);
+    task.limit = localDateTime;
+  });
+
   const handleSelectList = (id) => {
     setSelectListId(id);
     axios
@@ -143,6 +151,7 @@ function Tasks(props) {
                 {task.title}
                 <br />
                 {task.limit}
+                <br />
                 {task.done ? '完了' : '未完了'}
               </Link>
             </li>
@@ -162,6 +171,8 @@ function Tasks(props) {
               className="task-item-link"
             >
               {task.title}
+              <br />
+              期限: {task.limit}
               <br />
               {task.done ? '完了' : '未完了'}
             </Link>
