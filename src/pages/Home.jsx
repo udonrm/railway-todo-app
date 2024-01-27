@@ -43,7 +43,6 @@ export function Home() {
         })
         .then((res) => {
           setTasks(res.data.tasks);
-          console.log(lists);
         })
         .catch((err) => {
           setErrorMessage(`タスクの取得に失敗しました。${err}`);
@@ -87,6 +86,13 @@ export function Home() {
         setErrorMessage(`タスクの取得に失敗しました。${err}`);
       });
   };
+
+  const keyDown = (e, listId) => {
+    if (e.key === 'Enter') {
+      handleSelectList(listId);
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -108,7 +114,6 @@ export function Home() {
           </div>
           <ul className="list-tab">
             {lists.map((list, key) => {
-              console.log(lists);
               const isActive = list.id === selectListId;
               return (
                 <li
@@ -117,6 +122,7 @@ export function Home() {
                   onClick={() => handleSelectList(list.id)}
                   aria-hidden="true"
                   tabIndex={lists.indexOf(list) + 1}
+                  onKeyDown={(e) => keyDown(e, list.id)}
                 >
                   {list.title}
                 </li>
