@@ -43,6 +43,7 @@ export function Home() {
         })
         .then((res) => {
           setTasks(res.data.tasks);
+          console.log(lists);
         })
         .catch((err) => {
           setErrorMessage(`タスクの取得に失敗しました。${err}`);
@@ -50,27 +51,26 @@ export function Home() {
     }
   }, [lists]);
 
-  // DBの時刻から+9時間
-  tasks.forEach((task) => {
-    // 一覧ページに表示させるために+9時間
-    const dateObj = new Date(task.limit);
-    dateObj.setTime(dateObj.getTime() + 9 * 60 * 60 * 1000);
-    const localDateTime = dateObj.toISOString().substring(0, 16);
-    task.limit = localDateTime;
+  if (tasks != null) {
+    tasks.forEach((task) => {
+      // 一覧ページに表示させるために+9時間
+      const dateObj = new Date(task.limit);
+      dateObj.setTime(dateObj.getTime() + 9 * 60 * 60 * 1000);
+      const localDateTime = dateObj.toISOString().substring(0, 16);
+      task.limit = localDateTime;
 
-    // 日本時間と比較するのでlocalDateTimeをもう一度Dateオブジェクトに直す
-    const taskLimit = new Date(localDateTime);
-    const diff = taskLimit.getTime() - currentTime.getTime();
-    const diffMin = diff / (60 * 1000);
-    console.log(diffMin);
-    const remainingTime = `${Math.floor(diffMin / 60)}時間${Math.floor(diffMin % 60)}分`;
-    if (diffMin > 0) {
-      task.remainingTime = remainingTime;
-    } else {
-      task.remainingTime = '期限切れ';
-    }
-    console.log(remainingTime);
-  });
+      // 日本時間と比較するのでlocalDateTimeをもう一度Dateオブジェクトに直す
+      const taskLimit = new Date(localDateTime);
+      const diff = taskLimit.getTime() - currentTime.getTime();
+      const diffMin = diff / (60 * 1000);
+      const remainingTime = `${Math.floor(diffMin / 60)}時間${Math.floor(diffMin % 60)}分`;
+      if (diffMin > 0) {
+        task.remainingTime = remainingTime;
+      } else {
+        task.remainingTime = '期限切れ';
+      }
+    });
+  }
 
   const handleSelectList = (id) => {
     setSelectListId(id);
@@ -108,13 +108,15 @@ export function Home() {
           </div>
           <ul className="list-tab">
             {lists.map((list, key) => {
+              console.log(lists);
               const isActive = list.id === selectListId;
               return (
                 <li
-                  key={key.id}
+                  key={list.id}
                   className={`list-tab-item ${isActive ? 'active' : ''}`}
                   onClick={() => handleSelectList(list.id)}
                   aria-hidden="true"
+                  tabIndex={lists.indexOf(list) + 1}
                 >
                   {list.title}
                 </li>
@@ -159,7 +161,7 @@ function Tasks(props) {
         {tasks
           .filter((task) => task.done === true)
           .map((task, key) => (
-            <li key={key.id} className="task-item">
+            <li key={task.id} className="task-item">
               <Link
                 to={`/lists/${selectListId}/tasks/${task.id}`}
                 className="task-item-link"
@@ -181,7 +183,7 @@ function Tasks(props) {
       {tasks
         .filter((task) => task.done === false)
         .map((task, key) => (
-          <li key={key.id} className="task-item">
+          <li key={task.id} className="task-item">
             <Link
               to={`/lists/${selectListId}/tasks/${task.id}`}
               className="task-item-link"
