@@ -1,9 +1,18 @@
 @charset "utf-8";
-$red: '#ff3333';
+$red: #ff3333;
+
+$moveToMiddle: (
+  display: flex,
+  flex-direction: column,
+  align-items: center,
+);
 
 .edit-list {
-  width: 1000px;
-  margin: 0 auto;
+  width: 90%;
+  margin: 100px auto;
+  @each $prop, $value in $moveToMiddle {
+    #{$prop}: $value;
+  }
 }
 
 .edit-list-form {
@@ -13,6 +22,12 @@ $red: '#ff3333';
 .edit-list-title {
   width: 300px;
   margin-bottom: 25px;
+  text-align: center;
+}
+
+.submit-button {
+  display: flex;
+  justify-content: center;
 }
 
 .delete-list-button {
@@ -20,7 +35,7 @@ $red: '#ff3333';
   border: solid 1px $red;
   width: 80px;
   height: 40px;
-  margin: 25px 5px;
+  margin: 0 5px;
   border-radius: 5px;
 }
 
@@ -34,4 +49,10 @@ $red: '#ff3333';
 
 .error-message {
   color: $red;
+}
+
+@media screen and (max-width: 768px) {
+  .edit-list-title {
+    max-width: 90%;
+  }
 }

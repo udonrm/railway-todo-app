@@ -1,11 +1,24 @@
 @charset "utf-8";
 
+$moveToMiddle: (
+  display: flex,
+  flex-direction: column,
+  align-items: center,
+);
+
 .new-list {
-  width: 1000px;
-  margin: 0 auto;
+  width: 90%;
+  margin: 100px auto;
+  @each $prop, $value in $moveToMiddle {
+    #{$prop}: $value;
+  }
 
   &-form {
     color: #555555;
+    @each $prop, $value in $moveToMiddle {
+      #{$prop}: $value;
+    }
+    justify-content: center;
   }
 
   &-title {
@@ -19,5 +32,11 @@
     width: 80px;
     height: 40px;
     border-radius: 5px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .new-list-title {
+    max-width: 90%;
   }
 }
