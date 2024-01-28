@@ -124,7 +124,7 @@ export function EditTask() {
             className="edit-task-date"
             value={limit}
           />
-          <div>
+          <div className="radio-button">
             <input
               type="radio"
               id="todo"
@@ -144,20 +144,22 @@ export function EditTask() {
             />
             完了
           </div>
-          <button
-            type="button"
-            className="delete-task-button"
-            onClick={onDeleteTask}
-          >
-            削除
-          </button>
-          <button
-            type="button"
-            className="edit-task-button"
-            onClick={onUpdateTask}
-          >
-            更新
-          </button>
+          <div className="submit-button">
+            <button
+              type="button"
+              className="delete-task-button"
+              onClick={onDeleteTask}
+            >
+              削除
+            </button>
+            <button
+              type="button"
+              className="edit-task-button"
+              onClick={onUpdateTask}
+            >
+              更新
+            </button>
+          </div>
         </form>
       </main>
     </div>
